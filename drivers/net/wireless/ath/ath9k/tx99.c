@@ -91,7 +91,9 @@ static struct sk_buff *ath9k_build_tx99_skb(struct ath_softc *sc)
 		if (IS_CHAN_HT40(ah->curchan))
 			rate->flags |= IEEE80211_TX_RC_40_MHZ_WIDTH;
 	}
-
+	printk(KERN_DEBUG "CSI debug: the rate index is %d\n", rate->idx);
+	printk(KERN_DEBUG "CSI debug: the rate count is %d\n", rate->count);
+	printk(KERN_DEBUG "CSI debug: the rate flags is %d\n", rate->flags);
 	memcpy(skb->data + sizeof(*hdr), PN9Data, sizeof(PN9Data));
 
 	return skb;
@@ -115,10 +117,10 @@ static int ath9k_tx99_init(struct ath_softc *sc)
 	int r;
 
 	if(ah->is_monitoring)
-		printk(KERN_DEBUG "the ath9k now is in monitor mode\n");
+		printk(KERN_DEBUG "CSI debug: the ath9k now is in monitor mode\n");
 	else
 	{
-		printk(KERN_DEBUG "the ath9k now is not in monitor mode\n");
+		printk(KERN_DEBUG "CSI debug: the ath9k now is not in monitor mode\n");
 	}
 
 	if (test_bit(ATH_OP_INVALID, &common->op_flags)) {

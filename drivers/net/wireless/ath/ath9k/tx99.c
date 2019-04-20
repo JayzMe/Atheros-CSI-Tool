@@ -37,6 +37,17 @@ static void ath9k_tx99_stop(struct ath_softc *sc)
 	ath_dbg(common, XMIT, "TX99 stopped\n");
 }
 
+static struct ath9k_channel *ath9k_csi_build_channel(struct ath_hw *ah,
+				u16 channel)
+{
+	struct ieee80211_channel *chan;
+	struct ath9k_channel *retchannel;
+	struct ath_common *common = ath9k_hw_common(ah);
+	chan = common->sbands[IEEE80211_BAND_5GHZ].channels[channel];
+	printk(KERN_DEBUG "CSI debug:the hw_value of the channel is %d", chan->hw_value);
+	printk(KERN_DEBUG "CSI debug:the center frequency of the channel is %d", chan->center_freq);
+}
+
 static struct sk_buff *ath9k_build_tx99_skb(struct ath_softc *sc)
 {
 	static u8 PN9Data[] = {0xff, 0x87, 0xb8, 0x59, 0xb7, 0xa1, 0xcc, 0x24,
@@ -272,6 +283,44 @@ static const struct file_operations fops_tx99_power = {
 	.owner = THIS_MODULE,
 	.llseek = default_llseek,
 };
+static ssize_t read_file_chan_test(struct file *file,
+					char __user *user_buf,
+					size_t count, loff_t *ppos)
+{
+	struct ath_softc *sc = file->private_data;
+	struct ath_hw *ah = sc->ah;
+	char buf[16];
+	u8 len;
+
+	len = sprintf(buf, "%u\n", ah->curchan->channel);
+	return simple_read_from_buffer(user_buf, count, ppos, buf, len);
+}
+static ssize_t write_file_chan_test(struct file *file,
+					 const char __user *user_buf,
+					 size_t count, loff_t *ppos)
+{
+	struct ath_softc *sc = file->private_data;
+	struct ath_hw *ah = sc->sc_ah;
+	u16 channel;
+	// u16 channelFlags;
+	char buf[16];
+	u8 len;
+	len = min(count, sizeof(buf) - 1);
+	if(copy_from_user(buf, user_buf, len))
+		return -EFAULT;
+	buf[len] = '\0';
+	if(kstrtou8(buf, 0, &channel))
+		return -EINVAL;
+	ath9k_csi_build_channel(ah, channel);
+}
+
+static const struct file_operation fops_chan_test = {
+	.read = read_file_chan_test,
+	.write = write_file_chan_test,
+	.open = simple_open,
+	.owner = THIS_MODULE,
+	.llseek = default_llseek,
+};
 
 void ath9k_tx99_init_debug(struct ath_softc *sc)
 {
@@ -284,4 +333,7 @@ void ath9k_tx99_init_debug(struct ath_softc *sc)
 	debugfs_create_file("tx99_power", S_IRUSR | S_IWUSR,
 			    sc->debug.debugfs_phy, sc,
 			    &fops_tx99_power);
+	debugfs_create_file("chan_test", S_IRUSR | S_IWUSR,
+			    sc->debug.debugfs_phy, sc,
+				&fops_chan_test);
 }

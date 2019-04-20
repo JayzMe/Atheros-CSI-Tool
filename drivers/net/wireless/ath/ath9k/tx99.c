@@ -300,7 +300,7 @@ static ssize_t read_file_chan_test(struct file *file,
 					size_t count, loff_t *ppos)
 {
 	struct ath_softc *sc = file->private_data;
-	struct ath_hw *ah = sc->ah;
+	struct ath_hw *ah = sc->sc_ah;
 	char buf[16];
 	u8 len;
 

@@ -48,7 +48,7 @@ static void ath9k_tx99_stop(struct ath_softc *sc)
 // 	printk(KERN_DEBUG "CSI debug:the center frequency of the channel is %d", chan->center_freq);
 // }
 
-static int *ath9k_csi_build_channel(struct ath_hw *ah,
+static int ath9k_csi_build_channel(struct ath_hw *ah,
 				u16 channel)
 {
 	struct ieee80211_channel *chan;

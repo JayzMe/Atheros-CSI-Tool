@@ -321,12 +321,12 @@ static ssize_t write_file_chan_test(struct file *file,
 	if(copy_from_user(buf, user_buf, len))
 		return -EFAULT;
 	buf[len] = '\0';
-	if(kstrtou8(buf, 0, &channel))
+	if(kstrtou16(buf, 0, &channel))
 		return -EINVAL;
 	ath9k_csi_build_channel(ah, channel);
 }
 
-static const struct file_operation fops_chan_test = {
+static const struct file_operations fops_chan_test = {
 	.read = read_file_chan_test,
 	.write = write_file_chan_test,
 	.open = simple_open,

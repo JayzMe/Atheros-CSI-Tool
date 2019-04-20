@@ -52,7 +52,7 @@ static int ath9k_csi_build_channel(struct ath_hw *ah,
 				u16 channel)
 {
 	struct ieee80211_channel *chan;
-	struct ath9k_channel *retchannel;
+	//struct ath9k_channel *retchannel;
 	struct ath_common *common = ath9k_hw_common(ah);
 	chan = &common->sbands[IEEE80211_BAND_5GHZ].channels[channel];
 	printk(KERN_DEBUG "CSI debug:the hw_value of the channel is %d", chan->hw_value);

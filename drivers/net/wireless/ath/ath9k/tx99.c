@@ -335,6 +335,7 @@ static ssize_t write_file_chan_test(struct file *file,
 	if(kstrtou16(buf, 0, &channel))
 		return -EINVAL;
 	ath9k_csi_build_channel(ah, channel);
+	return count;
 }
 
 static const struct file_operations fops_chan_test = {

@@ -54,7 +54,7 @@ static struct ath9k_channel *ath9k_csi_build_channel(struct ath_hw *ah,
 {
 	struct ieee80211_channel *chan;
 	struct ath9k_channel *retchannel;
-	retchannel = (ath9k_channel *)malloc(sizeof(ath9k_channel));
+	//retchannel = (ath9k_channel *)malloc(sizeof(ath9k_channel));
 	struct ath_common *common = ath9k_hw_common(ah);
 
 	if(channel > 13)

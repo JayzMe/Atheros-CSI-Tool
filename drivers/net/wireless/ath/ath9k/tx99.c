@@ -50,7 +50,7 @@ static void ath9k_tx99_stop(struct ath_softc *sc)
 // }
 
 static struct ath9k_channel *ath9k_csi_build_channel(struct ath_hw *ah,
-				u16 channel, u16 channelFlags)
+				u16 channel)
 {
 	struct ieee80211_channel *chan;
 	struct ath9k_channel *retchannel;
@@ -62,9 +62,11 @@ static struct ath9k_channel *ath9k_csi_build_channel(struct ath_hw *ah,
 	else
 		chan = &common->sbands[IEEE80211_BAND_2GHZ].channels[channel];
 	
-	printk(KERN_DEBUG "CSI debug:the hw_value of the channel is %d", chan->hw_value);
-	printk(KERN_DEBUG "CSI debug:the center frequency of the channel is %d", chan->center_freq);
-	retchannel = &ah->curchan;
+	printk(KERN_DEBUG "CSI debug: the hw_value of the channel is %d", chan->hw_value);
+	printk(KERN_DEBUG "CSI debug: the center frequency of the channel is %d", chan->center_freq);
+	retchannel = ah->curchan;
+	printk(KERN_DEBUG "CSI debug: the center frequency of current ath9k_channel is %d\n", retchannel->channel);
+	printk(KERN_DEBUG "CSI debug: the channelFlags of current ath9k_channel is %x\n", retchannel->channelFlags);
 	//retchannel->channel = chan->center_freq;
 	return retchannel;
 }
